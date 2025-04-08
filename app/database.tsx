@@ -2,16 +2,16 @@ import { Sequelize, DataTypes, Model } from "sequelize";
 import mysql2 from 'mysql2'; // Needed to fix sequelize issues with WebPack
 const sequelize = new Sequelize(
     {
-        database: 'labtop', username: 'root', password: '',
+        database: 'server_laptop', username: 'root', password: '',
         host: 'localhost', dialect: 'mysql', dialectModule: mysql2, // fix sequelize with WebPack
     })
-interface iTinTuc extends Model<any, any> {
+interface iTinTuc extends Model<number, string> {
     id: number; 
     tieu_de: string; 
     slug: string; 
     mo_ta: string; 
     ngay: string;
-    noi_dung: Text; 
+    noi_dung: string; 
     luot_xem: number; 
     id_loai: number;
     hinh: string;

@@ -19,4 +19,14 @@ interface oneProd {
     an_hien: string,
     tinh_chat: string
 }
-export type {oneCate, oneProd};
+
+interface ICart {
+    id:number;
+    ten_sp:string;
+    gia_mua:number;
+    gia_tong: number;
+    hinh:string;
+    so_luong:number;
+}
+
+export type {oneCate, oneProd, ICart};

@@ -5,7 +5,7 @@ function Nav() {
         <nav className="flex justify-center items-center">
             <ul className="flex align-middle">
                 <li className="p-4"><Link className="text-[1rem]" href="/">Trang chủ</Link></li>
-                <li className="p-4"><Link className="text-[1rem]" href="/product">Sản phẩm</Link></li>
+                <li className="p-4"><Link className="text-[1rem]" href="/san-pham">Sản phẩm</Link></li>
                 <li className="p-4"><Link className="text-[1rem]" href="/blogs">Tin tức</Link></li>
                 <li className="p-4"><Link className="text-[1rem]" href="/contact">Liên hệ</Link></li>
             </ul>

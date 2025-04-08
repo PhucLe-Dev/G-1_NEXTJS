@@ -1,6 +1,8 @@
 "use client";
 import { oneProd } from "@/app/Components/cautrucdata";
 import ShowSP from "@/app/Components/ShowSP";
+import NavbarSP from "@/app/san-pham/navbarsp";
+import TopMain from "@/app/san-pham/topmain";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -28,14 +30,12 @@ export default function SpTheoLoai() {
 
     useEffect(() => {
         fetch( `http://localhost:3000/api/sptrongloai/${id_loai}`)
-        .then(res => {
-            return res.json()})
+        .then(res => res.json())
         .then(data => setSptrongloai(data))
         .catch(err => console.log("lỗi lấy api sp trong loại: ", err))
 
         fetch(`http://localhost:3000/api/loai/${id_loai}`)
-        .then(res => {
-            return res.json()})
+        .then(res => res.json())
         .then(data => setLoai(data))
         .catch(err => console.log("lỗi lấy loại sản phẩm: ", err))
     }, [sptrongloai, loai])
@@ -58,16 +58,20 @@ export default function SpTheoLoai() {
     }
 
     return (
-        <div className="sphot">
-            <div className="bg-[#ebebeb] p-2 my-6 text-base text-[#000] flex justify-between">
-                <h2 className="uppercase text-[#fe6532]">Sản phẩm {loai.ten_loai}</h2>
-                <Link href="" className="hover:text-[#fe6532]">Xem tất cả</Link>
-            </div>
-            <div className="grid grid-cols-4 gap-10">
-                {sptrongloai.map((sp: oneProd) => (
-                    <ShowSP key={sp.id} sp={sp} />
-                ))}
-            </div>
-        </div>
+       <div className="container mx-auto">
+                   <div className="flex gap-4">
+                       <NavbarSP />
+                       <main className="w-5/6">
+                           <TopMain />
+                           <div className="">
+                               <div className="grid grid-cols-4 gap-6">
+                                   {sptrongloai.map((sp: oneProd) => (
+                                       <ShowSP key={sp.id} sp={sp} />
+                                   ))}
+                               </div>
+                           </div>
+                       </main>
+                   </div>
+               </div>
     )
 }

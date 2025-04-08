@@ -11,7 +11,7 @@ export default function DetailProd() {
 
     console.log("slug detail:", slug);
 
-    let spnull: oneProd = {
+    const spnull: oneProd = {
         id: 0, ten_sp: '', slug: '', hinh: '', gia: 0, gia_km: 0, luot_xem: 1, ngay: '',
         tinh_chat: '', id_loai: 0, hot: "0", an_hien: '0'
     };

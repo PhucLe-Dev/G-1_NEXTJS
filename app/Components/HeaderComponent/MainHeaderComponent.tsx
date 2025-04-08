@@ -1,87 +1,10 @@
 "use client"; // Vì có dùng useState và useEffect
 import { BsCart3 } from "react-icons/bs";
-import { IoIosSearch } from "react-icons/io";
 import { CiUser } from "react-icons/ci";
 import Link from "next/link";
-import { useState, useContext, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { oneProd } from "../cautrucdata";
-import { useContextGlobal } from "./GlobalStateContext";
-
+import InputSearch from "./InputSearch";
 
 function MainHeader() {
-  const router = useRouter()
-  const { searchState, setSearchState } = useContextGlobal();
-  const [tu_khoa, setTuKhoa] = useState("");
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [currentPage, setCurrentPage] = useState(1); // Quản lý trang hiện tại
-  const [totalPages, setTotalPages] = useState(1); // Tổng số trang
-  // Gọi API gợi ý khi từ khóa thay đổi
-  useEffect(() => {
-    if (tu_khoa.length > 0) {
-      fetchSuggestions(tu_khoa);
-    } else {
-      setSuggestions([]);
-    }
-  }, [tu_khoa]);
-
-  const fetchSuggestions = async (keyword: string) => {
-    try {
-      const res = await fetch(`http://localhost:3000/api/suggestions/${keyword}`);
-      const data = await res.json();
-      setSuggestions(data);
-    } catch (err) {
-      console.error("Lỗi lấy gợi ý:", err);
-      setSuggestions([]);
-    }
-  }
-
-  const handleSearch = async (page: number = 1) => {
-    if (tu_khoa.trim() === "") return;
-    try {
-      let res = await fetch(`http://localhost:3000/api/search/${tu_khoa}?page=${page}`);
-      if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
-      }
-      let kq_sp = await res.json();
-      console.log("Dữ liệu trả về:", kq_sp);
-
-      if (!kq_sp || !kq_sp.data || kq_sp.data.length === 0) {
-        console.log("Không tìm thấy sản phẩm, chuyển hướng đến trang notfound");
-        router.push("/notfound");
-        return;
-      }
-
-      let sp_arr: oneProd[] = kq_sp.data as oneProd[];
-      setSearchState({
-        searchResults: kq_sp.data,
-        currentPage: page,
-        totalPages: kq_sp.totalPages,
-      });
-      setSearchState({
-        searchResults: kq_sp.data,
-        currentPage: page,
-        totalPages: kq_sp.totalPages,
-      });
-      router.push(`/productSearch?search=${tu_khoa}&page=${page}`);
-    } catch (error) {
-      console.error("Lỗi tìm kiếm:", error);
-      router.push("/notfound");
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      handleSearch(1); // Gọi tìm kiếm với trang 1 khi nhấn Enter
-    }
-  };
-
-  const handleSuggestionClick = (suggestion: string) => {
-    setTuKhoa(suggestion);
-    setSuggestions([]);
-    router.push(`/productSearch/search?search=${suggestion}`);
-  };
-
   return (
     <div className="flex items-center justify-between px-6 py-3">
       <Link href="/">
@@ -91,43 +14,16 @@ function MainHeader() {
           </g>
         </svg>
       </Link>
-      <div className="group relative flex flex-grow max-w-[600px] items-center border bg-white">
-        <input
-          type="text"
-          value={tu_khoa}
-          placeholder="Nhập tên sản phẩm ..."
-          className="p-2 flex-grow outline-none text-black"
-          onChange={e => { setTuKhoa(e.target.value) }}
-          onKeyDown={handleKeyDown}
-        />
-        <button onClick={() => handleSearch(1)} className="bg-[#f5412d] p-2">
-          <IoIosSearch size={20} />
-        </button>
-        <ul className="group-focus-within:block absolute hidden top-full w-[563px] left-0 right-0 bg-white border border-[#dfdfdf] text-gray-600 mt-1">
-        {suggestions.length > 0 && (
-                            <ul className="absolute left-0 right-0 bg-white border shadow-md z-10">
-                                {suggestions.map((suggestion, index) => (
-                                    <li
-                                        key={index}
-                                        onClick={() => handleSuggestionClick(suggestion)}
-                                        className="p-2 hover:bg-gray-100 cursor-pointer"
-                                    >
-                                        {suggestion}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-        </ul>
-      </div>
+      <InputSearch />
       <div className="flex items-center">
         <div className="flex mr-5">
           <span><Link href="">Đăng nhập</Link> | <Link href="">Đăng Ký</Link></span>
           <CiUser size={20} />
         </div>
-        <div className="relative">
+        <Link href="/gio-hang" className="relative">
           <BsCart3 size={20} />
           <span className="absolute -top-2 -right-1 bg-white text-[#fe6532] text-xs rounded-full px-1">3</span>
-        </div>
+        </Link>
       </div>
     </div>
   )
